@@ -1,0 +1,8 @@
+#pragma once
+
+namespace ts::build {
+inline constexpr const char* compiler = "@CMAKE_CXX_COMPILER_ID@ @CMAKE_CXX_COMPILER_VERSION@";
+inline constexpr const char* build_type = "@CMAKE_BUILD_TYPE@";
+inline constexpr const char* flags = "@BUILD_FLAGS@";
+inline constexpr const char* sanitize = "@SANITIZE@";
+}

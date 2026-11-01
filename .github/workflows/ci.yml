@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.compiler }} ${{ matrix.preset }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [debug, release, asan, tsan]
+        compiler: [clang++, g++]
+    env:
+      CXX: ${{ matrix.compiler }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ninja
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+      # Kernels with 32 bits of mmap randomness break ThreadSanitizer's memory layout.
+      - name: Reduce ASLR entropy for ThreadSanitizer
+        if: matrix.preset == 'tsan'
+        run: sudo sysctl vm.mmap_rnd_bits=28
+      - run: cmake --preset ${{ matrix.preset }}
+      - run: cmake --build --preset ${{ matrix.preset }}
+      - run: ctest --preset ${{ matrix.preset }}
+
+  fuzz:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ninja
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+      - name: Build the parser fuzzer (libFuzzer + ASan + UBSan)
+        run: |
+          cmake -S . -B build/fuzz -G Ninja -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo -DSANITIZE=address -DBUILD_FUZZER=ON
+          cmake --build build/fuzz --target fuzz_parser
+      - name: Fuzz for two minutes
+        run: |
+          mkdir -p fuzz-corpus
+          cp tests/fuzz/seeds/* fuzz-corpus/
+          ./build/fuzz/tests/fuzz_parser -max_total_time=120 fuzz-corpus

@@ -1,0 +1,10 @@
+function(add_bench name)
+  add_executable(${name} ${name}.cpp)
+  target_link_libraries(${name} PRIVATE core)
+  target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+endfunction()
+
+add_bench(book_bench)
+add_bench(parse_bench)
+add_bench(queue_bench)
+add_bench(risk_bench)

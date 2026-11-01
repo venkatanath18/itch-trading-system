@@ -1,0 +1,13 @@
+# build output
+build/
+cmake-build-*/
+compile_commands.json
+
+# market data: large, and Nasdaq's (see data/README.md)
+data/*
+!data/README.md
+
+# editors and macOS
+.DS_Store
+.vscode/
+.idea/
