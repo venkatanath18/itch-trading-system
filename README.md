@@ -1,5 +1,7 @@
 # C++ Trading System, from Market Data to Order
 
+[![CI](https://github.com/venkatanath18/itch-trading-system/actions/workflows/ci.yml/badge.svg)](https://github.com/venkatanath18/itch-trading-system/actions/workflows/ci.yml)
+
 A trading system in C++20 that goes from an exchange's raw market data to an
 order, run on a full day of real Nasdaq data: 268,744,780 TotalView-ITCH 5.0
 messages from 30 December 2019. It parses the binary feed, keeps a per-order
@@ -160,8 +162,6 @@ has the stages, their checks and their status.
   pin threads to cores, and which has less memory than one day of data. The
   final latency numbers should come from a Linux x86 machine with pinned,
   isolated cores, using the same command.
-- **CI is written but has not run yet** (`.github/workflows/ci.yml`: four
-  configurations with clang and GCC, plus libFuzzer).
 
 ## Reproduce
 

@@ -7,14 +7,15 @@ is ticked and you can answer its **check questions** out loud, without notes.
 > **Status (1 Nov 2026).** Every stage is built and its results are in
 > `results/`, on an Apple M1 (8 GB) with the 30 Dec 2019 day; the stretch goal
 > too. A ticked box below means the result file exists and says it passed.
+> CI passes on GitHub Actions from the first push (1 Nov 2026): Debug,
+> Release, ASan + UBSan and TSan, each with clang and GCC on Linux, plus a
+> libFuzzer run.
 > Still open:
-> - **CI:** `.github/workflows/ci.yml` is written but has never run: the repo
->   has no commits and no GitHub remote yet. Locally, all four configurations
->   pass with Apple clang 17, and Debug passes with GCC 15 as well.
 > - **Linux x86 machine:** not used. The latency numbers come from the M1,
 >   whose timer ticks every 41.7 ns and which can't pin threads, so take the
 >   final ones on Linux (`tools/reproduce.sh` pins with `--pin` there).
-> - **Fresh-clone test** of stage 11: needs the first commit.
+> - **Fresh-clone test** of stage 11: clone the repo from GitHub, download the
+>   day and run `tools/reproduce.sh`.
 > - **The check questions** are yours: the code and `results/` hold the
 >   material, but being able to answer them is the point of each stage.
 
@@ -56,10 +57,10 @@ in CI, before any trading code exists.
   timer ticks only about every 42 ns.
 
 **Done when**
-- [ ] An empty test passes in all four configurations, locally and in CI.
-  (Locally: yes, `results/tests.md`. CI: written, not yet run.)
+- [x] An empty test passes in all four configurations, locally and in CI.
+  (Locally: `results/tests.md`. CI: all four configurations pass with clang and GCC on Linux.)
 - [ ] The project builds and runs on the Linux machine.
-  (Not done: no Linux x86 machine yet. GCC 15 builds it and passes the tests on macOS.)
+  (It builds and passes the tests on Linux in CI; there is no Linux x86 machine for the latency runs yet.)
 
 **Check questions**
 - What does each sanitizer catch, and why can't AddressSanitizer and
